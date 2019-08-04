@@ -1,0 +1,213 @@
+        body { 
+            margin: 0;
+            font-family: 'Exo 2', sans-serif;
+            box-sizing: border-box;
+        }
+        #parentPosition {
+            position: fixed;
+            width: 300px;
+            height: 400px;
+            left: 50px;
+        }
+        div {
+            font-size: 16px;
+        }
+        .title {
+            font-size: 14px;
+        }
+        a {
+            margin: 5px;
+        }
+        strong {
+            color: red;
+        }
+        #forecast {
+            font-size: 12px;
+            display: flex;
+            justify-content: space-around;
+            height: 200px;
+        }
+        #popup{ background-image: url(../picture/nebo.jpg);
+            width: 320px; 
+            height: 270px;
+            padding: 5px 20px 13px 20px; 
+            border: 5px 
+            solid #021570;
+            top: 0;
+            right: 0; 
+            position: fixed;
+            border-radius: 10%; 
+            z-index: 2;
+        }
+        #moreinf {
+            position: relative;
+            top: 15px;
+            left: 15px;
+            text-align: left;
+            margin-bottom: 15px;
+
+        }
+        #temp-with-icon {
+            width: 50px;
+            float: left;
+            padding-top: 20px;
+        }
+        #profile {
+            width: 150px;
+            float: right;
+        }
+        #back {
+            position: absolute;
+            left: 310px;
+            top: 270px;
+
+        }
+        .spinner {
+            width: 170px;
+            height: 170px;
+        }
+        #spinner {
+            width: 100px;
+            height: 100px;
+        }
+        #section {
+            width: 200px;
+            height: 200px;
+        }
+        #location {
+            width: 310px;
+        }
+        table {
+            font-size: 18px; 
+            width: 100%;
+        }
+        .table thead th {
+            background-color: gray;
+            color: #fff;
+            height: 25px;
+        }
+        .table td {
+            background-color: #f9f9f9;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+        td .name{
+            width: 60%;
+        }
+        td .count{
+            width: 30%;
+            } 
+        td {
+            width: 10%;
+        } 
+        ul {
+            list-style: none
+        }
+        .up, .down {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .modal {
+            display: block; 
+            background-color: #f9f9f9;
+            width: 400px;
+            max-width: 100%;
+            height: 370px;
+            max-height: 100%;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            top: 50%;
+            border-radius: 10px;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 60px 10px rgba(0, 0, 0, 0.9);
+        }
+
+        .modal_closed {
+            display: none;
+        }
+        .modal__header {
+            height: 10px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+        }
+
+        .modal__close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAEFCu8CAAAABGdBTUEAALGPC/xhBQAAAqpJREFUSA2tljtyFEEMhsdgHJpb2NyAxwkgcQHGHGE3Bs4B8RICV6G4ARSERH4QGaog4vF/qv7HWu3MzrqMqjR69C9puls9PV13QU9Rr13Y3Vfpf7GPxLdRROGw0hs43vHYFuM9wYAMOcbYaQ47u7fJgRMGFMkwIgyHyIDesNMgAD3dkvZDvGWPlSVUG4wxBu43h0HIGT4UO7Hv2EeoB1wCQPhYzi/i12JHSA26acWpLV96IMtDGQZU+TEDrT9qAb8lD8RnzXbwC9mL5vsjGbSvpwGnzWfB+5s8F7C/cLLSDrS8y0Ci+gbguutiBzxLYCoQkMm4D0NOD47JwVUl0Vz8U5wD38veFa8ldptDw9xpfhZvkj4JkStlnT1eoXxmMrjqHKUlYlMBsclsdg5gZWkKmgP/Q3EQi2Fgc/WNe2yH5IOKowscWDslxXV0lXF7DNiwzMEOpLLHkTHX7ECv3XKvBIH5Ll7KlOfEmIm3yAWeMEDf2Ylt+iYlv/Zz2cbR39FKdmBDeU4O5jMB7jMA0yspDp6SjunlJsE3enRROAGchFyVkzIruEmTT91cTLJ61GpyMGApfinioGwy3VxwSCcHudbS/yhUi5NzhXbl4QbJ4EVB0T65nYzF59ZyiFvMGFqNGkE0a25yg/KHuUFDkJxjB9dCAdAjHwbno0YcDP4s7KySt/dfh9RJ4gWGVsF54wgP3VMGWDKbenfl6nxYwBg/JuNjw8UwBsA/tEdyr9DU7MgVn8V9Kflj7OL8kY0tJ8nH9g9//mg7HzX2xEFzPT1g6V+pBglRZzE2+3y9ON8sJ0LnD8eXHCAus4X4QMyFt26PGAMDliPhi5A85OwvROlLtCOLdfZbXVWSi5wb0WOh+Nm7bFFiiL0S8btDc/HL80Z83hgdH2NgJukfa8ehuEonW4wAAAAASUVORK5CYII=');
+            overflow: hidden;
+            text-indent: -999em;
+            text-decoration: none;
+        }
+
+        .modal__close:hover {
+            background-color: red;
+            text-decoration: none;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        #calendarDiv table {
+            margin-top: 7px;
+            border-collapse: collapse;
+                }
+        #calendarDiv td,th {
+            padding: 7px;
+            text-align: center;
+            border: 2px white solid;
+            max-width: 30px;
+        }
+        #calendarDiv th {
+            font-weight: bold;
+            color: white;
+        }
+        #calendarDiv td.highlight {
+            background-color: purple !important ;
+        }
+        #calendarDiv #hover {
+            background-color: pink !important;
+        }
+        #calendarDiv .first {
+            background-color: #4ac3ff;
+            color: white;
+        }
+        #greeting {
+            font-family: 'Neucha', cursive;
+            font-size: 24px;
+        }
+        #userName {
+            color: red;
+        }
+
+
+
+
+
+
+
+
+
+
+

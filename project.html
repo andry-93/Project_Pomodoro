@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Project</title>
+    <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
+    <script src="script/weatherJS.js"></script>
+    <script defer src="script/clock.js"></script>
+    <script defer src="script/text.js"></script>
+    <script defer src="script/toDoList.js"></script>
+    <script defer src="script/calendar.js"></script>
+    <script defer src="script/timer.js"></script>
+    <script src="https://kit.fontawesome.com/e3949abc2e.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Neucha&display=swap" rel="stylesheet">
+
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu+Condensed' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <link rel="stylesheet" type="text/css" href="css/todo.css">
+    <link rel="stylesheet" type="text/css" href="css/timer.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css"/>
+
+</head>
+<body>
+  <div id="popup">
+        <div id="moreinf">
+            <a href="#" id="oneDay" title="Узнать погоду на сегодня" <i class="fa fa-cloud" aria-hidden="true"></i></a>
+            <a href="#" id="threeDays" title="Узнать погоду на три дня" <i class="fa fa-bar-chart" aria-hidden="true"></i></a>
+        </div>
+        <h1 style="font-size: 27px; color: #021570; padding-bottom: 7px;">Погода</h1>
+        <div id="forecast"></div>
+        <div id="section">
+            <div id="temp-with-icon"></div>
+            <div id="profile">
+                <h2 id="location"></h2>
+                <div id="temp"></div>
+                <div id="descr"></div>
+                <div id="image"></div>
+                <div id="wind"></div>
+            </div>
+        </div>
+        <a href="#" class="modal__close" title="Закрыть" onclick="document.getElementById('popup').style.display='none';"></a>
+  </div>
+<!--Закрытие виджета с погодой -->
+<!-- Строим основное поле Pomodoro с таймером -->
+  <div class="container">
+      <div class="link-wrapper-container">
+        <a href="#" class="pluginModal"><img src="picture/clock.png" title="clock" data-supermodal="clockDiv"></a>
+        <a href="#" class="pluginModal"><img src="picture/calendar.png" title="calendar" data-supermodal="calendarDiv"></a>
+        <a href="#" class="pluginModal"><img src="picture/tree.png" title="tree" data-supermodal="tree" id="showTree"></a>
+        <a href="#"><img src="picture/exit.png" title="Забыть пользователя" data-supermodal="tree" id="showTree" onclick="deleteUser()"></a>
+      </div>
+
+      <div id="modal-overlay" class="modal-overlay modal_closed"></div>
+      <div class="modal modal_closed" id="clockDiv">
+        <header class="modal__header">
+            <a href="#" class="modal__close mod_cl" title="Закрыть модальное окно">Закрыть</a>
+        </header>
+        <canvas id="clock" width="300px" height="300px"></canvas>
+      </div>
+      <div class="modal modal_closed" id="calendarDiv">
+        <header class="modal__header">
+            <a href="#" class="modal__close mod_cl" title="Закрыть модальное окно">Закрыть</a>
+        </header>
+        <div id="calendarDiv">
+        </div>
+      </div>
+      <div class="modal modal_closed" id="tree">
+        <header class="modal__header">
+            <h3>Дерево растет <br> по мере выполнения помидорок</h3>
+            <a href="#" class="modal__close mod_cl" title="Закрыть модальное окно">Закрыть</a>
+        </header>
+        <canvas id="canvas"></canvas>
+      </div>
+
+    <h1>Pomodoro Timer</h1>
+
+    <h3 id="greeting">"ПОСТАНОВКА ЦЕЛЕЙ ЯВЛЯЕТСЯ ПЕРВЫМ ШАГОМ НА ПУТИ <br> ПРЕВРАЩЕНИЯ МЕЧТЫ В РЕАЛЬНОСТЬ"<br> Приветствуем, <span id="userName"></span>! <br> Следите за своим прогрессом c помощью нашего приложения </h3>
+
+    <div id="pomodoro">  
+      <img src="picture/tom.png" style="width:400px; height:400px">
+      <div id="status"></div>
+      <div class="timerDisplay">25:00</div>
+      <button id="start-btn" class="btn">СТАРТ!</button>
+    </div>
+
+    <div class="settings">
+      <div id="work">
+        <p>Время работы</p>
+        <button class="btn-settings" id="work-plus">+</button>
+        <div><span id="work-min">25</span> мин</div>
+        <button class="btn-settings" id="work-minus">-</button>
+      </div>
+
+      <button id="reset" class="btn">Обновить</button>
+
+      <div id="break">
+        <p>Время отдыха</p>
+        <button class="btn-settings" id="break-plus">+</button>
+        <div><span id="break-min">5</span> мин</div>
+        <button class="btn-settings" id="break-minus">-</button>
+      </div>
+    </div>
+<!-- Строим ToDoList с заданиями "помидорками" -->
+    <div id="tasks">
+      <div id="toDo" class="header">
+        <h2>Список "помидор"</h2>
+        <input type="text" id="myInput" placeholder="Задача">
+        <span onclick="newElement()" class="addBtn">Добавить</span>
+      </div>
+
+      <ul id="myUL">
+        <li>Прочитать учебную литературу</li>
+        <li class="checked">Пересчитать затраты на ремонт</li>
+        <li>Пробежка вдоль канала</li>
+        <li>Поработать над проектом</li>
+      </ul>
+    </div>
+    <canvas id="myChart"></canvas>
+<!-- Строим список долгосрочных проектов -->    
+    <div id="app"></div>
+<!-- Дополнительное поле с описанием концепции/теории Pomodoro -->    
+    <div class="flex-center-children vh-1 padding-1">
+      <div class="card" id="sample-card">
+        <div class="close-button">X</div>
+        <div class="button" id="sample-button">Pomodoro - что это?</div>
+        <div class="muddle" id="sample-paragraph">
+           Метод «Помидора» — техника управления временем, предложенная Франческо Чирилло в конце 1980-х. Техника предполагает разбиение задач на 25-минутные периоды, называемые «помидоры», сопровождаемые короткими перерывами.
+           Продолжайте работать «помидор» за «помидором», пока все задачи не будут выполнены. Каждые 4 «помидора» делайте длинный перерыв (15-30 минут).
+        </div>
+      </div>
+    </div>
+  
+  </div>
+
+<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/6859/tween.min_1.js'></script>
+<script type="text/javascript">
+  // Запускаем виджет с погодой 
+    var currentWeather = new WeatherWidget();
+    currentWeather.getWeather(); 
+</script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.3.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.1/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+<script src="script/firebase.js"></script>
+<script src="script/listproj.js"></script>  
+<!--<script src="datagr.js"></script>-->
+<script src="script/cookies.js"></script>
+<script src="script/charts.js"></script>
+<script src="script/task.js"></script>
+<script src='script/algoTree.js'></script>
+
+</body>
+</html>
