@@ -128,10 +128,9 @@
 	function Model() {
 		this.changeListener = null;
 		this.sec = 0;
-		this.workMin = 5;
+		this.workMin = 25;
 		this.breakMin = 5;
-		this.remaining = 0;
-		this.isBreak = true;
+		this.isBreak = false;
 		this.isPaused = true;
 		this.time;
 	};
@@ -140,8 +139,13 @@
 	// view
 	function View() {
 		const timerDisplay = document.querySelector('.timerDisplay');
-		const workMin = document.getElementById('work-min');
-		const breakMin = document.getElementById('break-min');
+		const workMinItem = document.getElementById('work-min');
+		const breakMinItem = document.getElementById('break-min');
+
+		this.workPlus = document.getElementById('work-plus');
+    this.workMinus = document.getElementById('work-minus');
+    this.breakPlus = document.getElementById('break-plus');
+    this.breakMinus = document.getElementById('break-minus');
 		this.startBtn = document.getElementById('start-btn');
 
 		this.showTimer = (min, sec) => {
@@ -151,6 +155,14 @@
 			else {
 				timerDisplay.innerHTML = `${min}:${sec}`;
 			}
+		}
+
+		this.showWorkMin = (model) => {
+			workMinItem.innerHTML = `${model.workMin}`;
+		}
+
+		this.showBreakMin = (model) => {
+			breakMinItem.innerHTML = `${model.breakMin}`;
 		}
 
 		this.modButton = (model) => {
@@ -166,7 +178,8 @@
 		let timer = null;
 		let min = this.model.workMin;
 		let sec = this.model.sec;
-
+		this.view.showWorkMin(this.model)
+		this.view.showBreakMin(this.model)
 		let timerCalc = () => {
 			this.view.showTimer(min, sec);
 			if (sec === 0) {
@@ -175,19 +188,37 @@
 			}
 			sec--;
 			if (min >= 0 && sec >= 0) {
-				timer = setTimeout(timerCalc, 1000)
+				timer = setTimeout(timerCalc, 1000);
 			}
 		};
 		
 		this.view.startBtn.addEventListener('click', () => {
 			clearTimeout(timer);
 			if (this.model.isPaused) {
-				this.model.isPaused = false
+				this.model.isPaused = false;
 				timerCalc();
 			} else {
-				this.model.isPaused = true
+				this.model.isPaused = true;
 			}
 			this.view.modButton(this.model);
+		});
+
+		this.view.workPlus.addEventListener('click', () => {
+			if (this.model.workMin < 25) {
+				this.model.workMin += 5;
+				min = this.model.workMin;
+				sec = 0;
+				this.view.showWorkMin(this.model);
+			}
+		});
+
+		this.view.workMinus.addEventListener('click', () => {
+			if (this.model.workMin > 5) {
+				this.model.workMin -= 5;
+				min = this.model.workMin;
+				sec = 0;
+				this.view.showWorkMin(this.model);
+			}
 		});
 	}
 	// controller
