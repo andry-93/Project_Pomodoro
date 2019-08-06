@@ -123,6 +123,7 @@
 //     }) 
 
 (function () {
+
 	// model
 	function Model() {
 		this.changeListener = null;
@@ -134,39 +135,62 @@
 		this.isPaused = true;
 		this.time;
 	};
+	// model
 
+	// view
 	function View() {
 		const timerDisplay = document.querySelector('.timerDisplay');
 		const workMin = document.getElementById('work-min');
 		const breakMin = document.getElementById('break-min');
-		const alarm = new Audio("https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3");
+		this.startBtn = document.getElementById('start-btn');
 
-		this.render = function (model) {
-			timerDisplay.innerHTML = (model.sec < 10) ? `${model.workMin}:0${model.sec}` : `${model.workMin}:${model.sec}`;
-			if (model.workMin <= 0 && model.sec <= 0) {
-					alarm.play();
+		this.showTimer = (min, sec) => {
+			if (sec < 10) {
+				timerDisplay.innerHTML = `${min}:0${sec}`;
+			}
+			else {
+				timerDisplay.innerHTML = `${min}:${sec}`;
 			}
 		}
 
-		this
+		this.modButton = (model) => {
+			this.startBtn.innerHTML = (model.isPaused) ? "СТАРТ!" : "СТОП";
+		}
 	};
+	// view
 
+	// controller
 	function Controller(model, view) {
 		this.view = view;
 		this.model = model;
-		this.view.render(this.model);
-		let timer = setInterval(() => {
-			if (this.model.sec === 0) {
-				this.model.sec = 60;
-				this.model.workMin--;
+		let timer = null;
+		let min = this.model.workMin;
+		let sec = this.model.sec;
+
+		let timerCalc = () => {
+			this.view.showTimer(min, sec);
+			if (sec === 0) {
+				sec = 60;
+				min--;
 			}
-			this.model.sec--;
-			this.view.render(this.model);
-			if (this.model.workMin <= 0 && this.model.sec <= 0) {
-				clearInterval(timer);
+			sec--;
+			if (min >= 0 && sec >= 0) {
+				timer = setTimeout(timerCalc, 1000)
 			}
-		}, 100);
+		};
+		
+		this.view.startBtn.addEventListener('click', () => {
+			clearTimeout(timer);
+			if (this.model.isPaused) {
+				this.model.isPaused = false
+				timerCalc();
+			} else {
+				this.model.isPaused = true
+			}
+			this.view.modButton(this.model);
+		});
 	}
+	// controller
 
 	var timerApp = {
 		init: function () {
