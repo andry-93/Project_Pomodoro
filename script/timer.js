@@ -132,6 +132,7 @@
 		this.isBreak = false;
 		this.isPaused = true;
 		this.time;
+		this.alarm = new Audio("https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3");
 	};
 	// model
 
@@ -192,11 +193,13 @@
 			}
 			sec--;
 			if (min >= 0 && sec >= 0) {
-				timer = setTimeout(timerCalc, 50);
+				timer = setTimeout(timerCalc, 1000);
 			} else {
+				this.model.alarm.currentTime = 0;
+        this.model.alarm.play();
 				this.model.isBreak = !this.model.isBreak;
 				min = this.model.isBreak ? this.model.breakMin : this.model.workMin;
-				timer = setTimeout(timerCalc, 50);
+				timer = setTimeout(timerCalc, 1000);
 			}
 		};
 		
@@ -274,7 +277,7 @@
 	}
 	// controller
 
-	var timerApp = {
+	const timerApp = {
 		init: function () {
 			model = new Model();
 			view = new View();
