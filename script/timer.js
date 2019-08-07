@@ -204,9 +204,9 @@
 		});
 
 		this.view.workPlus.addEventListener('click', () => {
-			if (this.model.workMin < 25) {
+			if (this.model.workMin < 60) {
 				this.model.workMin += 5;
-				min = this.model.workMin;
+				// min = this.model.workMin;
 				sec = 0;
 				this.view.showWorkMin(this.model);
 			}
@@ -215,9 +215,27 @@
 		this.view.workMinus.addEventListener('click', () => {
 			if (this.model.workMin > 5) {
 				this.model.workMin -= 5;
-				min = this.model.workMin;
+				// min = this.model.workMin;
 				sec = 0;
 				this.view.showWorkMin(this.model);
+			}
+		});
+
+		this.view.breakPlus.addEventListener('click', () => {
+			if (this.model.breakMin < 60) {
+				this.model.breakMin += 5;
+				// min = this.model.breakMin;
+				sec = 0;
+				this.view.showBreakMin(this.model);
+			}
+		});
+
+		this.view.breakMinus.addEventListener('click', () => {
+			if (this.model.breakMin > 5) {
+				this.model.breakMin -= 5;
+				// min = this.model.breakMin;
+				sec = 0;
+				this.view.showBreakMin(this.model);
 			}
 		});
 	}
