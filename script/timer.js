@@ -127,7 +127,6 @@
 	// model
 	function Model() {
 		this.changeListener = null;
-		this.sec = 0;
 		this.workMin = 25;
 		this.breakMin = 5;
 		this.isBreak = false;
@@ -147,6 +146,7 @@
     this.breakPlus = document.getElementById('break-plus');
     this.breakMinus = document.getElementById('break-minus');
 		this.startBtn = document.getElementById('start-btn');
+		this.resetBtn = document.getElementById('reset');
 
 		this.showTimer = (min, sec) => {
 			if (sec < 10) {
@@ -175,11 +175,15 @@
 	function Controller(model, view) {
 		this.view = view;
 		this.model = model;
+
 		let timer = null;
-		let min = this.model.workMin;
-		let sec = this.model.sec;
+		let min = this.model.isBreak ? this.model.breakMin : this.model.workMin;
+		let sec = 0;
+
 		this.view.showWorkMin(this.model)
 		this.view.showBreakMin(this.model)
+		this.view.showTimer(min, sec);
+		
 		let timerCalc = () => {
 			this.view.showTimer(min, sec);
 			if (sec === 0) {
@@ -188,7 +192,11 @@
 			}
 			sec--;
 			if (min >= 0 && sec >= 0) {
-				timer = setTimeout(timerCalc, 1000);
+				timer = setTimeout(timerCalc, 50);
+			} else {
+				this.model.isBreak = !this.model.isBreak;
+				min = this.model.isBreak ? this.model.breakMin : this.model.workMin;
+				timer = setTimeout(timerCalc, 50);
 			}
 		};
 		
@@ -206,8 +214,11 @@
 		this.view.workPlus.addEventListener('click', () => {
 			if (this.model.workMin < 60) {
 				this.model.workMin += 5;
-				// min = this.model.workMin;
-				sec = 0;
+				if (!this.model.isBreak) {
+					min = this.model.workMin;
+					sec = 0;
+					this.view.showTimer(min, sec);
+				}
 				this.view.showWorkMin(this.model);
 			}
 		});
@@ -215,8 +226,11 @@
 		this.view.workMinus.addEventListener('click', () => {
 			if (this.model.workMin > 5) {
 				this.model.workMin -= 5;
-				// min = this.model.workMin;
-				sec = 0;
+				if (!this.model.isBreak) {
+					min = this.model.workMin;
+					sec = 0;
+					this.view.showTimer(min, sec);
+				}
 				this.view.showWorkMin(this.model);
 			}
 		});
@@ -224,8 +238,11 @@
 		this.view.breakPlus.addEventListener('click', () => {
 			if (this.model.breakMin < 60) {
 				this.model.breakMin += 5;
-				// min = this.model.breakMin;
-				sec = 0;
+				if (this.model.isBreak) {
+					min = this.model.breakMin
+					sec = 0;
+					this.view.showTimer(min, sec);
+				}
 				this.view.showBreakMin(this.model);
 			}
 		});
@@ -233,10 +250,26 @@
 		this.view.breakMinus.addEventListener('click', () => {
 			if (this.model.breakMin > 5) {
 				this.model.breakMin -= 5;
-				// min = this.model.breakMin;
-				sec = 0;
+				if (this.model.isBreak) {
+					min = this.model.breakMin
+					sec = 0;
+					this.view.showTimer(min, sec);
+				}
 				this.view.showBreakMin(this.model);
 			}
+		});
+
+		this.view.resetBtn.addEventListener('click', () => {
+			clearTimeout(timer);
+      this.model.isPaused = true;
+			this.model.isBreak = false;
+			min = this.model.isBreak ? this.model.breakMin : this.model.workMin;
+			sec = 0;
+			this.view.showWorkMin(this.model)
+			this.view.showBreakMin(this.model)
+			this.view.showTimer(min, sec);
+			this.view.showTimer(min, sec);
+			this.view.modButton(this.model);
 		});
 	}
 	// controller
