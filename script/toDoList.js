@@ -2,7 +2,12 @@
 
   // model
 	function Model() {
-		
+		this.data = [
+			"Прочитать учебную литературу",
+			"Пересчитать затраты на ремонт",
+			"Пробежка вдоль канала",
+			"Поработать над проектом"
+		]
 	};
   // model
   
@@ -11,7 +16,7 @@
     this.myNodelist = document.getElementsByTagName("li");
     this.close = document.getElementsByClassName("close");
     this.edit = document.getElementsByClassName('edit');
-    this.list = document.querySelector('ul');
+    this.list = document.getElementById('myUL');
     this.addBtn = document.getElementById("addBtn");
 
     // Создаем кнопку (крестик) для закрытия и располагаем в каждом LI
@@ -21,7 +26,6 @@
           let span = document.createElement("span");
           span.innerHTML = "&#128465;";
           span.className = "close";
-          span.style.fontWeight = "bold";
           this.myNodelist[i].appendChild(span);
         }
       }
@@ -37,7 +41,31 @@
           this.myNodelist[i].appendChild(spanEdit);
         }
       }
-    }
+		}
+		
+		this.addList = (data) => {
+			this.list.innerHTML = "";
+			data.forEach((item, i) => {
+				const li = document.createElement("li");
+				let value = document.createElement("span");
+				value.innerHTML = item;
+
+				const spanEdit = document.createElement("span");
+				spanEdit.innerHTML = "&#9997;";
+				spanEdit.className = "edit";
+				spanEdit.setAttribute("item_id", i)
+
+				const spanDel = document.createElement("span");
+				spanDel.innerHTML = "&#128465;";
+				spanDel.className = "close";
+				spanDel.setAttribute("item_id", i)
+
+				li.appendChild(value);
+				li.appendChild(spanEdit);
+				li.appendChild(spanDel);
+				this.list.appendChild(li);
+			});
+		}
 	};
   // view
   
@@ -47,7 +75,7 @@
     this.model = model;
 
     // При клике по крестику удаляем текущий LI
-    let delLi = () => {
+    let delLi = function() {
       for (let i = 0; i < this.view.close.length; i++) {
         this.view.close[i].onclick = function() {
           let div = this.parentElement;
@@ -79,24 +107,18 @@
 
     // Создаем новый LI в списке после нажатия кнопки "Добавить"
     let newElement = () => {
-      var li = document.createElement("li");
-      var inputValue = document.getElementById("myInput").value;
-      var t = document.createTextNode(inputValue);
-      li.appendChild(t);
-      if (inputValue === '') {
-        alert("Необходимо заполнить поле!");
-      } else {
-        document.getElementById("myUL").appendChild(li);
-      }
-      document.getElementById("myInput").value = "";
-      this.view.addClose();
-      this.view.addEdit();
+			let inputValue = document.getElementById("myInput").value;
+			if (inputValue === '') {
+				alert("Необходимо заполнить поле!");
+			} else {
+				this.model.data.push(inputValue);
+				this.view.addList(this.model.data);
+			}
       delLi();
       clickPen();
     }
 
-    this.view.addClose();
-    this.view.addEdit();
+		this.view.addList(this.model.data);
     delLi();
     clickPen();
     checked();
