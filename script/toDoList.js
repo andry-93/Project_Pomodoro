@@ -17,31 +17,8 @@
     this.close = document.getElementsByClassName("close");
     this.edit = document.getElementsByClassName('edit');
     this.list = document.getElementById('myUL');
-    this.addBtn = document.getElementById("addBtn");
-
-    // Создаем кнопку (крестик) для закрытия и располагаем в каждом LI
-    this.addClose = () => {
-      for (let i = 0; i < this.myNodelist.length; i++) {
-        if (this.myNodelist[i].querySelectorAll(".close").length === 0) {
-          let span = document.createElement("span");
-          span.innerHTML = "&#128465;";
-          span.className = "close";
-          this.myNodelist[i].appendChild(span);
-        }
-      }
-    }
-
-    // Создаем кнопку (пишущая рука) для исправления и располагаем в каждом LI
-    this.addEdit = () => {
-      for (let i = 0; i < this.myNodelist.length; i++) {
-        if (this.myNodelist[i].querySelectorAll(".edit").length === 0) {
-          let spanEdit = document.createElement("span");
-          spanEdit.innerHTML = "&#9997;";
-          spanEdit.className = "edit";
-          this.myNodelist[i].appendChild(spanEdit);
-        }
-      }
-		}
+		this.addBtn = document.getElementById("addBtn");
+		this.myInput = document.getElementById("myInput");
 		
 		this.addList = (data) => {
 			this.list.innerHTML = "";
@@ -49,6 +26,7 @@
 				const li = document.createElement("li");
 				let value = document.createElement("span");
 				value.innerHTML = item;
+				value.className = "value";
 
 				const spanEdit = document.createElement("span");
 				spanEdit.innerHTML = "&#9997;";
@@ -56,7 +34,7 @@
 				spanEdit.setAttribute("item_id", i)
 
 				const spanDel = document.createElement("span");
-				spanDel.innerHTML = "&#128465;";
+				spanDel.innerHTML = "&#10006;";
 				spanDel.className = "close";
 				spanDel.setAttribute("item_id", i)
 
@@ -74,54 +52,37 @@
 		this.view = view;
     this.model = model;
 
-    // При клике по крестику удаляем текущий LI
-    let delLi = function() {
-      for (let i = 0; i < this.view.close.length; i++) {
-        this.view.close[i].onclick = function() {
-          let div = this.parentElement;
-          div.remove();
-        }
-      }
-    }
-
-    // При клике на "кор.руку" значение текущего LI переносим в основной INPUT с возможностью исправления, а сам LI удаляем 
-    let clickPen = () => {
-      for (let k = 0; k < this.view.edit.length; k++) {
-        this.view.edit[k].onclick = function(){
-          let divEdit = this.parentElement;
-          divEdit.style.display = "none";
-          let task = this.parentElement.innerHTML.split('<span')[0];
-          document.getElementById("myInput").value = task;
-        }
-      }
-    }
-
-    // Добавляем класс "checked" при клике по любому LI (и наоборот)
-    let checked = () => {
-      this.view.list.addEventListener('click', function(e) {
-        if (e.target.tagName === 'LI') {
-          e.target.classList.toggle('checked'); //Если класс у элемента отсутствует - добавляет, иначе - убирает. 
-        }
-      });
-    }
-
     // Создаем новый LI в списке после нажатия кнопки "Добавить"
     let newElement = () => {
-			let inputValue = document.getElementById("myInput").value;
-			if (inputValue === '') {
+			if (this.view.myInput.value === '') {
 				alert("Необходимо заполнить поле!");
 			} else {
-				this.model.data.push(inputValue);
+				this.model.data.push(this.view.myInput.value);
 				this.view.addList(this.model.data);
 			}
-      delLi();
-      clickPen();
-    }
+		}
+		
+		this.view.list.addEventListener('click', (evt) => {
+			evt = evt || window.event;
+			evt = evt.target || evt.srcElement;
+			if (evt.classList.contains("close")) {
+				this.model.data.splice(evt.getAttribute("item_id"), 1);
+				this.view.addList(this.model.data);
+			};
+			if (evt.classList.contains("edit")) {
+				this.view.myInput.value = this.model.data[evt.getAttribute("item_id")];
+				this.model.data.splice(evt.getAttribute("item_id"), 1);
+				this.view.addList(this.model.data);
+			};
+			if (evt.classList.contains("value")) {
+				evt.parentElement.classList.toggle('checked');
+			};
+			if (evt.nodeName === "LI") {
+				evt.classList.toggle('checked');
+			};
+		})
 
 		this.view.addList(this.model.data);
-    delLi();
-    clickPen();
-    checked();
     this.view.addBtn.addEventListener('click', newElement)
 	}
   // controller
